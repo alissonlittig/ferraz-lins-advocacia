@@ -12,24 +12,25 @@
 
   // revelar ao rolar; sem IntersectionObserver tudo aparece
   const items = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
+  const init = () => { if ('IntersectionObserver' in window) {
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { threshold: .12 });
     items.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
-  } else items.forEach(el => el.classList.add('in'));
+  } else items.forEach(el => el.classList.add('in')); };
+  setTimeout(init, 0);
 
   // contadores do hero
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) {
     document.querySelectorAll('[data-count]').forEach(el => {
-      const end = +el.dataset.count, t0 = performance.now(), d = 1400;
+      const end = +el.dataset.count, d = 1400; let t0 = 0;
       const tick = t => {
-        const p = Math.min((t - t0) / d, 1);
+        t0 = t0 || t; const p = Math.min((t - t0) / d, 1);
         el.textContent = Math.round(end * (1 - Math.pow(1 - p, 3)));
         if (p < 1) requestAnimationFrame(tick);
       };
       el.textContent = '0';
-      requestAnimationFrame(tick);
+      setTimeout(() => requestAnimationFrame(tick), 600);
     });
   }
 
