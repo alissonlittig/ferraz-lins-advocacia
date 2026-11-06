@@ -16,7 +16,7 @@
     const io = new IntersectionObserver(es => es.forEach(e => {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { threshold: .12 });
-    items.forEach((el, i) => { el.style.transitionDelay = (i % 3) * 80 + 'ms'; io.observe(el); });
+    items.forEach(el => io.observe(el));
   } else items.forEach(el => el.classList.add('in')); };
   setTimeout(init, 0);
 
